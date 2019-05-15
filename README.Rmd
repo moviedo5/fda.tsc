@@ -44,7 +44,6 @@ You can install the latest patched version from Github with:
 ```{r gh-installation, eval = FALSE}
 # install.packages("devtools")
 library(devtools)
-library(fda.usc)
 devtools::install_github("moviedo5/fda.tsc")
 ```
 
