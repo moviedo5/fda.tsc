@@ -45,7 +45,6 @@ You can install the latest patched version from Github with:
 # install.packages("devtools")
 library(devtools)
 devtools::install_github("moviedo5/fda.tsc")
-#devtools::use_vignette("fda.tsc")
 ```
 
 
@@ -53,9 +52,8 @@ This package contains a datasets availabe in
 [Time Series Classification Web Page](http://timeseriesclassification.com/dataset.php) converted in `fdata` class objects (of  \code{fda.usc} packages.   The vignette gives a quick introduction to the usage of the `fda.tsc` package.
 
 
-
-## fda.tsc depends of fda.usc package
-For installation instructions, see below.
+## Dependencies
+The fda.tsc package depends on the fda.usc R-packages. For installation instructions, see below.
 
 A hands on introduction to \code{fda.usc} package can be found in the reference [vignette](https://www.jstatsoft.org/index.php/jss/article/view/v051i04/v51i04.pdf).
 
@@ -78,21 +76,39 @@ list.fdata <- mget(nm)
 #names(list.fdata)
 ```
 
+```{r, eval = TRUE,message=FALSE,warning=FALSE}
+aa<-d$results[, "Package"]
+#length(aa);class(aa)
+ivar <-  c("Package","Item")
+tabla<-data.frame(d$results[,ivar])
+names(tabla)<-ivar
+tabla$ncurves <-as.numeric(unlist(lapply(seq_along(list.fdata), function(i) nrow(list.fdata[[i]]$x))))
+tabla$n_argvals <- as.numeric(unlist(lapply(seq_along(list.fdata), function(i) ncol(list.fdata[[i]]$x))))
+#names(tabla)
+tab1 <-unlist(lapply(seq_along(list.fdata), function(i)   nlevels(list.fdata[[i]]$df[,"class"])))
+tab2 <-matrix(unlist(lapply(seq_along(list.fdata), function(i)   table(list.fdata[[i]]$df[,"sample"]))),ncol=2,byrow=T)
+tabla<-cbind(tabla,tab1,tab2[,2:1])
+names(tabla)[5:7]<-c("nlevels","n_train","n_test")
+#head(tabla)
+#mapply(function(x, i) paste(i, x), x, names(x))
+## call the promised data
+#data(list = nm, package = "fda.tsc")
+## get the dimensions of each data set
+# lapply(mget(nm), dim)
+ #lapply(mget(nm)[[1]], class)
+#install.packages("vcdExtra")
+#vcdExtra::datasets("fda.tsc")
+```
 
-<!--
-(https://minerva.usc.es/xmlui/bitstream/handle/10347/18236/rep_1734.pdf?sequence=1&isAllowed=y)
 
--->
+A ver peta
+
+```{r, eval = TRUE,message=FALSE,warning=FALSE, echo=FALSE}
+library(knitr)
+kable(tabla,caption="Table: Time Series Classification Datasets adapted for fda.usc package")
+
+```
 
 
 
- 
-<!-- 
-## https://archive.ics.uci.edu/ml/datasets.html 
--->
 
-<!-- This is a basic example which shows you how to solve a common problem: -->
-
-<!-- ```{r example} -->
-<!-- ## basic example code -->
-<!-- ``` -->
