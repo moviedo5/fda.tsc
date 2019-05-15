@@ -33,11 +33,10 @@ Incluir reference card
 
 
 ## Package overview
-The **fda.usc** package implements methods  for exploratory and descriptive analysis of functional data such as depth measurements, atypical curves detection, regression models, supervised classification, unsupervised classification and functional analysis of variance.
 
-**fda.tsc** Functional Data Sets of  UEA & UCR Time Series Classification Repository [Time Series Classification Repository](http://www.timeseriesclassification.com) adapted for using in package  **fda.usc**- 
+**fda.tsc** Functional Data Sets of  UEA & UCR Time Series Classification Repository [Time Series Classification Repository](http://www.timeseriesclassification.comadapted for using in package  **fda.usc**.  The **fda.usc** package implements methods  for exploratory and descriptive analysis of functional data such as depth measurements, atypical curves detection, regression models, supervised classification, unsupervised classification and functional analysis of variance.
 
-## Dependence of  fda.usc
+## fda.tsc depends of fda.usc package
 For installation instructions, see below.
 
 A hands on introduction to \code{fda.usc} can be found in the reference [vignette](https://www.jstatsoft.org/index.php/jss/article/view/v051i04/v51i04.pdf).
@@ -62,31 +61,76 @@ You can install the latest patched version from Github with:
 # install.packages("roxygen2")
 library(devtools)
 library(roxygen2)
-
-devtools::install_github("moviedo5/fda.tsc")
 library(fda.usc)
-
-files_names = list.files("./data/", full.names = FALSE, recursive = FALSE)
-files_names
-load(file = paste0("./data/",files_names[74]))
-ls()
-load(file = "./data/WormsTwoClass.rda")
-ls()
-
-dim(Worms$x)
-names(Worms$df)
-lapply(Worms$df,table)
-
-files_names = list.files("./", full.names = FALSE, recursive = FALSE)
-# http://r-pkgs.had.co.nz/man.html 
-
-roxygen2::roxygenise()
-
-#3.2 Processing the Documentation
-#devtools::document()
-
+#roxygen2::roxygenise()
+devtools::install_github("moviedo5/fda.tsc")
 ```
 
+
+This package contains a datasets availabe in 
+[Time Series Classification Web Page](http://timeseriesclassification.com/dataset.php) converted in `fdata` class objects (of  \code{fda.usc} packages.   The following chunk gives a quick introduction to the usage of the `fda.tsc` package.
+ 
+List of TSC datasets:  
+
+```{r, eval = TRUE,message=FALSE,warning=FALSE}
+library("fda.tsc")
+# data(package = "fda.tsc") # Shows the package dataset
+d <- data(package = "fda.tsc")
+## names of data sets in the package
+#d$results[, "Item"]
+nm <- d$results[, "Item"]
+## assign it to use later 
+data(list = nm, package = "fda.tsc")
+# lfdata: list with the datasets
+list.fdata <- mget(nm) 
+#names(list.fdata)
+```
+
+```{r, eval = TRUE,message=FALSE,warning=FALSE}
+aa<-d$results[, "Package"]
+#length(aa);class(aa)
+ivar <-  c("Package","Item")
+tabla<-data.frame(d$results[,ivar])
+names(tabla)<-ivar
+tabla$ncurves <-as.numeric(unlist(lapply(seq_along(list.fdata), function(i) nrow(list.fdata[[i]]$x))))
+tabla$n_argvals <- as.numeric(unlist(lapply(seq_along(list.fdata), function(i) ncol(list.fdata[[i]]$x))))
+#names(tabla)
+tab1 <-unlist(lapply(seq_along(list.fdata), function(i)   nlevels(list.fdata[[i]]$df[,"class"])))
+tab2 <-matrix(unlist(lapply(seq_along(list.fdata), function(i)   table(list.fdata[[i]]$df[,"sample"]))),ncol=2,byrow=T)
+tabla<-cbind(tabla,tab1,tab2[,2:1])
+names(tabla)[5:7]<-c("nlevels","n_train","n_test")
+#head(tabla)
+#mapply(function(x, i) paste(i, x), x, names(x))
+## call the promised data
+#data(list = nm, package = "fda.tsc")
+## get the dimensions of each data set
+# lapply(mget(nm), dim)
+ #lapply(mget(nm)[[1]], class)
+#install.packages("vcdExtra")
+#vcdExtra::datasets("fda.tsc")
+```
+
+```{r, eval = TRUE,message=FALSE,warning=FALSE, echo=FALSE}
+#library(knitr)
+#kable(tabla,caption="o e oe eo")
+#data.table::data.table(tabla)
+
+#install.packages("DT")
+library(DT)
+datatable(tabla)
+#editable = TRUE)
+#DT:::DT2BSClass('display')
+## [1] "table table-striped table-hover"
+#DT:::DT2BSClass(c('compact', 'cell-border'))
+## [1] "table table-condensed table-bordered"
+#datatable(head(mtcars), rownames = head(LETTERS))  # new row names
+#colnames = c('Here', 'Are', 'Some', 'New', 'Names')
+#datatable(  head(iris),
+#  caption = htmltools::tags$caption(
+ #   style = 'caption-side: bottom; text-align: center;',
+  #  'Table 2: ', htmltools::em('This is a simple caption for the table.')  ))
+
+```
 <!-- 
 ## https://archive.ics.uci.edu/ml/datasets.html 
 -->

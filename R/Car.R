@@ -2,7 +2,7 @@
 #'
 #' @description   The data set was in theUCR archive, but we do not as yet know where it comes from
 #' 
-#' @details 
+#' @details No details
 #' @format 
 #' \describe{
 #' The variables are as follows:
@@ -13,8 +13,7 @@
 #' \item{\code{sample}:}{Factor variable. In TSC, the first 60 values (\code{sample=train}) are used for training sample and the rest of 60 (\code{sample=test}) for testing.}
 #' }
 #' \item{\code{x}:}{ \code{fdata} class object with with n=120 curves (per row) observed in 577 discretization points (per column).}
-#' }
-#'   
+#' }#'   
 #' }
 #' 
 #' @docType data
@@ -23,5 +22,3 @@
 #' @usage data(Car)
 #' @source  The data set was in the UCR archive.
 #' \url{http://timeseriesclassification.com/description.php?Dataset=Car}
-#' 
-NULL
