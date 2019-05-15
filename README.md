@@ -35,8 +35,8 @@ You can install the latest patched version from Github with:
 ``` r
 # install.packages("devtools")
 library(devtools)
-library(fda.usc)
 devtools::install_github("moviedo5/fda.tsc")
+#devtools::use_vignette("fda.tsc")
 ```
 
 This package contains a datasets availabe in [Time Series Classification
