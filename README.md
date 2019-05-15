@@ -21,7 +21,7 @@ Incluir reference card
 
 **fda.tsc** Functional Data Sets of UEA & UCR Time Series Classification
 Repository \[Time Series Classification
-Repository\](<http://www.timeseriesclassification.comadapted> for using
+Repository\](<http://www.timeseriesclassification.com>) adapted for using
 in package **fda.usc**. The **fda.usc** package implements methods for
 exploratory and descriptive analysis of functional data such as depth
 measurements, atypical curves detection, regression models, supervised
