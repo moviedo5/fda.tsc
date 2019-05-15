@@ -1,0 +1,178 @@
+---
+title: "fda.tsc: Functional Data Sets for Time Series Classification"
+author: "Manuel Oviedo de la Fuente"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{fda.tsc}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+  
+This vignette gives a quick introduction to the key features included in the `fda.usc` package. Please use the [Project Page](https://github.com/moviedo5/fda.tsc/) to suggest new features or report bugs. This package contains a datasets availabe in 
+[Time Series Classification Web Page](http://timeseriesclassification.com/dataset.php) converted in `fdata` class objects (of  \code{fda.usc} packages.   The following chunk gives a quick introduction to the usage of the `fda.tsc` package.
+ 
+ 
+* Overview of repository
+
++ Data: Folder containing the data from the UCR TSC repository
++ R: R codef of data set descriptions
++ CoFD.Rproj: R project. Open this and the working directory and all paths are correctly set for all R files in /R
+ 
+ 
+This vignette gives a quick introduction to the key features and functions included in the `classiFunc` package. Please use the [Project Page](https://github.com/maierhofert/CoFD) to suggest new features or report bugs. This package offers an extensible and efficient implementation of `k` nearest neighbor classification for functional data.
+  
+  
+List of TSC datasets:  
+
+```{r, eval = TRUE,message=FALSE,warning=FALSE}
+library("fda.tsc")
+# data(package = "fda.tsc") # Shows the package dataset
+d <- data(package = "fda.tsc")
+## names of data sets in the package
+#d$results[, "Item"]
+nm <- d$results[, "Item"]
+## assign it to use later 
+data(list = nm, package = "fda.tsc")
+# lfdata: list with the datasets
+list.fdata <- mget(nm) 
+#names(list.fdata)
+```
+
+```{r, eval = TRUE,message=FALSE,warning=FALSE}
+aa<-d$results[, "Package"]
+#length(aa);class(aa)
+ivar <-  c("Package","Item")
+tabla<-data.frame(d$results[,ivar])
+names(tabla)<-ivar
+tabla$ncurves <-as.numeric(unlist(lapply(seq_along(list.fdata), function(i) nrow(list.fdata[[i]]$x))))
+tabla$n_argvals <- as.numeric(unlist(lapply(seq_along(list.fdata), function(i) ncol(list.fdata[[i]]$x))))
+#names(tabla)
+tab1 <-unlist(lapply(seq_along(list.fdata), function(i)   nlevels(list.fdata[[i]]$df[,"class"])))
+tab2 <-matrix(unlist(lapply(seq_along(list.fdata), function(i)   table(list.fdata[[i]]$df[,"sample"]))),ncol=2,byrow=T)
+tabla<-cbind(tabla,tab1,tab2[,2:1])
+names(tabla)[5:7]<-c("nlevels","n_train","n_test")
+#head(tabla)
+#mapply(function(x, i) paste(i, x), x, names(x))
+## call the promised data
+#data(list = nm, package = "fda.tsc")
+## get the dimensions of each data set
+# lapply(mget(nm), dim)
+ #lapply(mget(nm)[[1]], class)
+#install.packages("vcdExtra")
+#vcdExtra::datasets("fda.tsc")
+```
+
+```{r, eval = TRUE,message=FALSE,warning=FALSE, echo=FALSE}
+#library(knitr)
+#kable(tabla,caption="o e oe eo")
+#data.table::data.table(tabla)
+
+#install.packages("DT")
+library(DT)
+datatable(tabla)
+#editable = TRUE)
+#DT:::DT2BSClass('display')
+## [1] "table table-striped table-hover"
+#DT:::DT2BSClass(c('compact', 'cell-border'))
+## [1] "table table-condensed table-bordered"
+#datatable(head(mtcars), rownames = head(LETTERS))  # new row names
+#colnames = c('Here', 'Are', 'Some', 'New', 'Names')
+#datatable(  head(iris),
+#  caption = htmltools::tags$caption(
+ #   style = 'caption-side: bottom; text-align: center;',
+  #  'Table 2: ', htmltools::em('This is a simple caption for the table.')  ))
+
+```
+
+
+
+# Functional data classification example
+
+## `fda.tsc` read the data sets and shows a brief description
+
+
+Example of classification using non-parametric (kNN and kernel) classifier using ArrowHead dataset:
+
+
+```{r, eval = TRUE, message=FALSE,warning=FALSE,echo=FALSE}
+subset.lfdata<-function(x,subset,select,drop=TRUE,...){
+  #if (any(class(x)!="lfdata")) stop("No list class object")
+  # ver si es neceario, igual ahora ya se carga con fda.usc
+  nvar<-length(x)
+  namx=names(x)
+  newx<-x
+  for (i in 1:nvar){
+	if (is.fdata(x[[i]])) {
+    newx[[i]]<-subset.fdata(x[[i]],subset,select,drop,...)
+		} else {
+	newx[[i]]<-subset(x[[i]],subset,select,drop,...)	
+		}
+  } 
+  return(invisible(newx))
+}
+```
+
+
+  
+Pruebas de GLM vs GLM-KFOLD
+
+```{r, eval = TRUE, message=FALSE,warning=FALSE,cache=TRUE}
+   
+name_classif <- c("glm.pc","glm.bsp")
+ind.classif <- c(1,3,6,7,8,9,10,12,16,17,18,19,20,23,26,28,30,32,33,34,36,
+                   40,43,46,58,59,60,63,64,65,70,72)
+ind.classif <- c(1,3,6,7,8,9,10,20,23,26,28,30,32,33,34,36,
+                   40,43,46,58,59,60,63,64,65,70,72)
+ndigits <- 2
+name_dataset <- names(list.fdata)[ind.classif]
+n_datasets <- length(name_dataset)
+n_classif <- length(name_classif)
+error.train <- error.test<- array(NA,dim=c(n_datasets,n_classif))
+  covar<-"x"
+  response <- "class"
+  par.classif <- list()
+  kfold <- 10
+  formula<- formula(class~x)
+  for (i in 1:n_datasets){ 
+     laux <- list.fdata[[ind.classif[i]]]
+     data.train<- subset.lfdata(laux,subset= laux$df$sample=="train")
+     data.test<- subset.lfdata(laux,subset= laux$df$sample=="test")
+     lev <- levels(laux$df$class)
+     levels(data.train$df$class)<-lev
+     levels(data.test$df$class)<-lev
+    # kNN classifiers with L2 distance (default) of the curves
+    #res1 = classif.knn(group = data.train$df$class, fdataobj = data.train$x, knn =1)
+    # Kernel classifiers with L2 distance (default) of the curves
+    #res2 = classif.kernel(group = data.train$df$class, fdataobj = data.train$x)
+     lpc <- list("x"=create.fdata.basis(data.train$x,1:3,type.basis="pc"))
+     res.pc = classif.glm(class ~x, data = data.train,basis.x=lpc)
+     
+     lbsp <- list("x"=create.fdata.basis(data.train$x,1:15,type.basis="bspline"))
+     res.bsp = classif.glm(class ~x, data = data.train,basis.b=lbsp)
+     
+     
+     res.mbsp = classif.glm(class ~x,data = data.train,
+                            basis.b = lbsp,type="majority")
+     res.mpc = classif.glm(class ~x,data = data.train,  
+                           basis.x=lpc, type="majority")
+    pred1 = predict(res.pc,  data.test)
+    pred2 = predict(res.bsp, data.test)
+    error.test[i,]<-c(mean(pred1 != data.test$df$class),  
+                      mean(pred3 != data.test$df$class))
+    error.test[i,]
+    save(kk,file="kk.RData")
+  }
+  dimnames(error.test)<-list(name_dataset,paste0("error_",name_classif,".test"))
+  tabla.mis<-data.frame(tabla[ind.classif,],
+                        kfold.min,
+                        round(error.test,ndigits))
+```
+
+```{r, eval = TRUE,message=FALSE,warning=FALSE, echo=FALSE}
+print(colnames(tabla.mis))
+#datatable(tabla.mis[,c(5,4,6,8,7,9)],rownames = name_dataset )
+#datatable(tabla.mis[,c(5,4,6,7,8,10,11,9,12,13)],rownames = name_dataset)
+datatable(tabla.mis[,],rownames = name_dataset)
+```
+  

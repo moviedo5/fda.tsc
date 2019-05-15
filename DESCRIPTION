@@ -1,0 +1,22 @@
+Package: fda.tsc
+Title: Functional Data Sets for Time Series Classification
+Version: 0.1
+Date: 2019-03-01
+Authors.R: c(person("Manuel Oviedo de la Fuente",role="aut", email =
+    "manuel.oviedo@usc.es"), person("Manuel Febrero-Bande",role="ctb"))
+Description: The R package fda.tsc contains  functional data set  for Time Series Classification.
+Depends:
+    R (>= 3.0.2), fda.usc
+License: GPL-2
+LazyData: true
+Author: Manuel Oviedo de la Fuente [aut],
+    Manuel Febrero-Bander [ctb]
+Maintainer: Manuel Oviedo de la Fuente <manuel.oviedo@sc.es>
+NeedsCompilation: yes
+Repository: CRAN
+RoxygenNote: 6.1.1
+Roxygen: list(markdown = TRUE)
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

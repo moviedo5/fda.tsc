@@ -1,0 +1,4 @@
+Release 0.0.1:
+metric.lp parallelised version using parallel=T 
+create.fdata.basis 
+metric.DTW
