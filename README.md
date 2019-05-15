@@ -1,18 +1,5 @@
----
-output: github_document
----
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, echo = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "README-"
-)
-```
-
-
 
 <!--
 
@@ -30,45 +17,50 @@ README.md is generated from README.Rmd. Please edit that file
 Incluir reference card
 -->
 
-
-
 ## Package overview
 
-**fda.tsc** Functional Data Sets of  UEA & UCR Time Series Classification Repository [Time Series Classification Repository](http://www.timeseriesclassification.comadapted for using in package  **fda.usc**.  The **fda.usc** package implements methods  for exploratory and descriptive analysis of functional data such as depth measurements, atypical curves detection, regression models, supervised classification, unsupervised classification and functional analysis of variance.
-
+**fda.tsc** Functional Data Sets of UEA & UCR Time Series Classification
+Repository \[Time Series Classification
+Repository\](<http://www.timeseriesclassification.comadapted> for using
+in package **fda.usc**. The **fda.usc** package implements methods for
+exploratory and descriptive analysis of functional data such as depth
+measurements, atypical curves detection, regression models, supervised
+classification, unsupervised classification and functional analysis of
+variance.
 
 ## Installation
 
 You can install the latest patched version from Github with:
 
-```{r gh-installation, eval = FALSE}
+``` r
 # install.packages("devtools")
 library(devtools)
 library(fda.usc)
 devtools::install_github("moviedo5/fda.tsc")
 ```
 
-
-This package contains a datasets availabe in 
-[Time Series Classification Web Page](http://timeseriesclassification.com/dataset.php) converted in `fdata` class objects (of  \code{fda.usc} packages.   The vignette gives a quick introduction to the usage of the `fda.tsc` package.
-
-
+This package contains a datasets availabe in [Time Series Classification
+Web Page](http://timeseriesclassification.com/dataset.php) converted in
+`fdata` class objects (of  packages. The vignette gives a quick
+introduction to the usage of the `fda.tsc` package.
 
 ## fda.tsc depends of fda.usc package
+
 For installation instructions, see below.
 
-A hands on introduction to \code{fda.usc} package can be found in the reference [vignette](https://www.jstatsoft.org/index.php/jss/article/view/v051i04/v51i04.pdf).
+A hands on introduction to  package can be found in the reference
+[vignette](https://www.jstatsoft.org/index.php/jss/article/view/v051i04/v51i04.pdf).
 
-Details on specific functions are in the [reference manual](https://cran.r-project.org/package=fda.usc/fda.usc.pdf), Manuel Oviedo PhD thesis [Advances in functional regression and classification models](http://hdl.handle.net/10347/18236)
+Details on specific functions are in the [reference
+manual](https://cran.r-project.org/package=fda.usc/fda.usc.pdf), Manuel
+Oviedo PhD thesis [Advances in functional regression and classification
+models](http://hdl.handle.net/10347/18236)
 
 <!--
 (https://minerva.usc.es/xmlui/bitstream/handle/10347/18236/rep_1734.pdf?sequence=1&isAllowed=y)
 
 -->
 
-
-
- 
 <!-- 
 ## https://archive.ics.uci.edu/ml/datasets.html 
 -->
@@ -76,5 +68,7 @@ Details on specific functions are in the [reference manual](https://cran.r-proje
 <!-- This is a basic example which shows you how to solve a common problem: -->
 
 <!-- ```{r example} -->
+
 <!-- ## basic example code -->
+
 <!-- ``` -->
