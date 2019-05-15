@@ -45,6 +45,7 @@ You can install the latest patched version from Github with:
 # install.packages("devtools")
 library(devtools)
 devtools::install_github("moviedo5/fda.tsc")
+#devtools::use_vignette("fda.tsc")
 ```
 
 
@@ -59,6 +60,24 @@ For installation instructions, see below.
 A hands on introduction to \code{fda.usc} package can be found in the reference [vignette](https://www.jstatsoft.org/index.php/jss/article/view/v051i04/v51i04.pdf).
 
 Details on specific functions are in the [reference manual](https://cran.r-project.org/package=fda.usc/fda.usc.pdf), Manuel Oviedo PhD thesis [Advances in functional regression and classification models](http://hdl.handle.net/10347/18236)
+
+
+List of TSC datasets:  
+
+```{r, eval = TRUE,message=FALSE,warning=FALSE}
+library("fda.tsc")
+# data(package = "fda.tsc") # Shows the package dataset
+d <- data(package = "fda.tsc")
+## names of data sets in the package
+#d$results[, "Item"]
+nm <- d$results[, "Item"]
+## assign it to use later 
+data(list = nm, package = "fda.tsc")
+# lfdata: list with the datasets
+list.fdata <- mget(nm) 
+#names(list.fdata)
+```
+
 
 <!--
 (https://minerva.usc.es/xmlui/bitstream/handle/10347/18236/rep_1734.pdf?sequence=1&isAllowed=y)
